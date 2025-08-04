@@ -1,0 +1,4 @@
+::ng-deep.ng-select-container {
+  height: 48px !important;
+  border-radius: 0.5rem !important;
+}

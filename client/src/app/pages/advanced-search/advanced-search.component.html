@@ -1,0 +1,165 @@
+<div class="container mx-auto sm:max-w-full md:max-w-screen-lg mt-3">
+  <div class="flex">
+    <div class="flex flex-col gap-3 w-full">
+      <div class="bg-base-100 rounded-md shadow-xl p-5 h-fit">
+        <div
+          class="flex lg:flex-row xs:flex-col xs:gap-y-3 gap-x-3"
+          [formGroup]="searchForm"
+        >
+          <div class="input input-bordered flex items-center gap-2">
+            <span
+              class="icon-[mingcute--search-line] w-4 h-4 opacity-70"
+            ></span>
+            <input
+              type="text"
+              class="grow w-1/4"
+              placeholder="Free Text"
+              formControlName="searchQuery"
+            />
+          </div>
+          <app-location-chooser-mini
+            [useSavedLocation]="true"
+            formControlName="location"
+          ></app-location-chooser-mini>
+          <div class="input input-bordered flex items-center gap-2">
+            <span class="icon-[uit--calender] w-4 h-4 opacity-70"></span>
+            <input
+              type="text"
+              class="grow w-1/4"
+              placeholder="Choose Dates"
+              id="datepicker"
+              #easepick
+              formControlName="dateRange"
+            />
+          </div>
+          <ng-select
+            bindLabel="name"
+            bindValue="id"
+            [items]="popularGenres"
+            formControlName="selectedGenre"
+            required
+            class="lg:w-1/4 xs:w-full"
+            placeholder="Choose a Genres"
+          >
+          </ng-select>
+          <button type="submit" class="btn btn-primary" (click)="doSearch()">
+            Submit
+          </button>
+        </div>
+      </div>
+      <div class="bg-base-100 rounded-md shadow-xl">
+        @if(searchDone) { @if(searchResults.events.length > 0) {
+
+        <div class="p-5">
+          <h1 class="font-headers text-3xl mb-4">Events</h1>
+
+          <a
+            *ngFor="
+              let result of searchResults.events
+                | paginate : { itemsPerPage: 5, currentPage: p }
+            "
+            class="flex flex-col bg-center bg-cover mb-1"
+            style="
+              background-image: url('{{ result.coverImage }}');
+            "
+            [routerLink]="
+              result.tmId === undefined
+                ? ['/e', result._id]
+                : ['/e', result.tmId]
+            "
+          >
+            <div
+              class="transition flex flex-row backdrop-blur-sm text-white bg-slate-600 bg-opacity-60 hover:bg-opacity-40"
+            >
+              <div
+                class="flex flex-col absolute bg-gradient-to-r from-beatfinder-blue to-beatfinder-green p-2"
+              >
+                <span class="font-light text-sm uppercase">{{
+                  result.dateTime | date : "MMM"
+                }}</span
+                ><span class="font-bold text-xl">
+                  {{ result.dateTime | date : "dd" }}</span
+                >
+              </div>
+              <img
+                class="aspect-square object-cover w-40 h-40 max-w-none shadow-md"
+                src="{{ result.coverImage }}"
+              />
+              <div
+                class="flex flex-row place-items-center ml-3 w-full justify-between"
+              >
+                <div class="flex-col">
+                  <h1 class="card-title font-headers font-normal">
+                    {{ result.eventName }}
+                  </h1>
+                  <div class="flex flex-row items-center gap-1">
+                    <span
+                      class="icon-[ep--location]"
+                      style="width: 18px; height: 18px"
+                    ></span>
+                    <div class="font-bold">{{ result.venue }}</div>
+                  </div>
+                  <div class="text-gray-300">{{ result.venueAddress }}</div>
+                  <div class="text-gray-300">
+                    {{ result.city }}, {{ result.country }}
+                  </div>
+                </div>
+                <a
+                  class="btn btn-primary text-white mr-3 xs:hidden"
+                  href="https://www.ticketmaster.com/metallica-m72-world-tour-2-day-chicago-illinois-08-09-2024/event/04005D764E334602"
+                  >Buy Now</a
+                >
+              </div>
+            </div>
+          </a>
+          <pagination-controls
+            class="text-center"
+            style="margin-top: 1rem !important"
+            (pageChange)="p = $event"
+          ></pagination-controls>
+        </div>
+        }@else {
+        <h1 class="text-center p-5 font-headers text-2xl">Events Not Found</h1>
+        } @if(searchResults.artists.length > 0) {
+        <div class="p-5">
+          <h1 class="font-headers text-3xl">Artists</h1>
+
+          <div
+            class="flex flex-row overflow-x-auto overflow-y-hidden mt-2 gap-8 items-center pb-3"
+          >
+            <a
+              class="flex flex-col cursor-pointer mr-5"
+              *ngFor="let result of searchResults.artists"
+              [routerLink]="
+                result.spotifyID === undefined
+                  ? ['/a', result.userID]
+                  : ['/a', result.spotifyID]
+              "
+            >
+              <div class="w-32 h-32">
+                <img
+                  class="rounded-full shadow-xl aspect-square object-cover bg-center"
+                  src="{{ result.profileImage }}"
+                />
+              </div>
+              <div
+                class="flex pt-4 flex-col items-center max-h-48 mb-2 uppercase"
+              >
+                <div>{{ result.name }}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        } } @if(!searchInitiated) {
+        <h1 class="text-xl text-center p-7">
+          Use the filters above to search for tickets
+        </h1>
+        } @if(searchInitiated && !searchDone) {
+        <div class="w-full text-center p-7">
+          <span class="loading loading-dots loading-lg"></span>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

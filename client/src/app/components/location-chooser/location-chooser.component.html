@@ -1,0 +1,61 @@
+<div
+  class="flex flex-row flex-nowrap btn btn-outline btn-primary"
+  (click)="showLocationContainer = true"
+>
+  @if(userLocation !== null){
+  <span
+    class="icon-[ep--location] hidden lg:block"
+    style="width: 16px; height: 16px"
+  ></span>
+  <span class="hidden lg:block"
+    >{{ userLocation.city }}, {{ userLocation.country }}
+  </span>
+  } @else {
+  <span
+    class="icon-[ep--location] xs:hidden lg:block"
+    style="width: 16px; height: 16px"
+  ></span>
+  <span class="xs:hidden lg:block">Choose Location</span>
+  }
+  <span
+    class="icon-[ep--location] xs:block lg:hidden"
+    style="width: 20px; height: 20px"
+  ></span>
+</div>
+
+@if(showLocationContainer) {
+<div
+  class="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-50"
+>
+  <div
+    class="bg-white shadow-xl rounded-md w-full max-w-lg p-5 mt-10 relative xs:w-3/4"
+  >
+    <div class="flex flex-row justify-between">
+      <h1 class="font-headers text-2xl mb-3">Update your location</h1>
+      <span
+        (click)="showLocationContainer = false"
+        class="icon-[material-symbols--close] cursor-pointer"
+        style="width: 24px; height: 24px; color: black"
+      ></span>
+    </div>
+
+    <input
+      type="text"
+      class="input input-bordered w-full"
+      (keyup)="fetchLocations()"
+      [(ngModel)]="searchQuery"
+    />
+    @if(searchResults.length > 0) {
+    <div class="flex border-solid border flex-col p-2 mt-3 rounded-md">
+      @for(location of searchResults; track location;){
+      <span
+        class="p-1 font-bold hover:bg-gray-200 cursor-pointer"
+        (click)="chooseLocation(location.city + ', ' + location.country)"
+        >{{ location.city }}, {{ location.country }}</span
+      >
+      }
+    </div>
+    }
+  </div>
+</div>
+}

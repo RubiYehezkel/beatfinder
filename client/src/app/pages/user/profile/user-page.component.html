@@ -1,0 +1,115 @@
+<div class="container mx-auto sm:max-w-full md:max-w-screen-lg relative mt-3">
+  <div class="flex flex-col md:flex-row gap-5">
+    <div
+      class="bg-[url('https://ddex.co.uk/wp-content/uploads/2018/10/Live-Music-Events-Stand-Design.jpg')] bg-center bg-cover bg-opacity-40 p-5 relative flex-grow text-white"
+    >
+      <div class="ml-0">
+        <div class="absolute top-5 left-5">
+          <h2 class="font-headers text-2xl">
+            Your Profile Page
+            <!-- <a routerLink="/settings">
+              <button
+                class="focus:outline-none focus:ring-blue-500 bg-blue-500 text-white px-3 py-1 rounded-full transition-transform duration-100 ease-in-out transform hover:scale-95 active:scale-90"
+              >
+                <i class="fas fa-cog"></i>
+              </button>
+            </a> -->
+            <div
+              class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+            ></div>
+          </h2>
+          <p class="text-white text-bolder mt-2">
+            Welcome to your profile page. Here, you can view your favorite
+            artists and track the events you are attending.
+          </p>
+        </div>
+        <div class="bg-gray-200 bg-opacity-80 p-3 mt-32 mb-4 w-1/2">
+          <h2 class="font-headers text-xl text-black mb-2">Favorite Genres:</h2>
+          <div class="flex flex-row gap-1 flex-wrap pt-1 pb-2">
+            @for (genre of currentUser?.favGenres; track genre) {
+            <div class="badge badge-sm capitalize w-fit flex-none">
+              {{ genre }}
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-gray-200 shadow-md p-5 relative w-full md:w-[250px] flex-shrink-0"
+    >
+      <div class="flex flex-col items-center h-full justify-center">
+        <div
+          class="bg-neutral rounded-full w-36 h-36 flex items-center justify-center"
+        >
+          <span class="text-white font-bold text-center text-xl">
+            {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+          </span>
+        </div>
+        <div class="text-gray-600 mt-2">{{ currentUser?.email }}</div>
+      </div>
+    </div>
+  </div>
+  <!-- Second Rectangle: Followed Artists -->
+  <div class="bg-base-100 shadow-md mt-3 p-5">
+    <h2 class="font-headers text-2xl">Artists You Follow</h2>
+    <div class="flex flex-row overflow-x-auto overflow-y-hidden mt-2">
+      @if(userSavedData.artists?.length > 0) { @for(artist of
+      userSavedData.artists; track artist) {
+      <a
+        class="flex flex-col cursor-pointer mr-5"
+        [routerLink]="['/a', artist.id]"
+      >
+        <div class="w-32 h-32">
+          <img
+            class="rounded-full shadow-xl aspect-square object-cover bg-center"
+            src="{{ artist.profileImage }}"
+          />
+        </div>
+        <div class="flex pt-4 flex-col items-center max-h-48 mb-2 w-32">
+          <div class="text-center">{{ artist.artistName }}</div>
+        </div></a
+      >
+      }} @else {
+      <div class="w-full text-center">
+        <h1 class="font-syne text-2xl">Go follow some artists</h1>
+      </div>
+      }
+    </div>
+  </div>
+  <!-- Third Rectangle: Attending Events -->
+  <div class="bg-base-100 shadow-md mt-3 p-5">
+    <h2 class="font-headers text-2xl">Events You Are Attending</h2>
+    <div class="flex flex-row overflow-x-auto overflow-y-hidden mt-2">
+      @if(userSavedData.events?.length > 0) { @for(event of
+      userSavedData.events; track event) {
+      <a
+        class="flex flex-col cursor-pointer mr-5"
+        [routerLink]="['/e', event.id]"
+      >
+        <div class="w-32 h-32">
+          <img
+            class="rounded-box w-32 h-32 aspect-square object-cover bg-center"
+            src="{{ event.coverImage }}"
+          />
+        </div>
+        <div class="flex pt-4 flex-col items-start max-w-48 w-32">
+          <div class="max-w-44 text-center">{{ event.eventName }}</div>
+          <div class="max-w-44 text-gray-400 text-center">
+            {{ event.dateTime | date : "mediumDate" }}
+          </div>
+          <div class="max-w-44 text-gray-400 text-center">
+            {{ event.venueAddress }}
+          </div>
+        </div></a
+      >
+      } } @else {
+      <div class="w-full text-center">
+        <h1 class="font-syne text-2xl">
+          Go out and have the time of your life!
+        </h1>
+      </div>
+      }
+    </div>
+  </div>
+</div>

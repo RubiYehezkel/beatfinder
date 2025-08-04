@@ -1,0 +1,77 @@
+<div class="form-control">
+  <input
+    type="text"
+    placeholder="Search"
+    class="input input-bordered w-full"
+    (keyup)="search($event)"
+    (focus)="onFocus()"
+    (click)="$event.stopPropagation()"
+    [(ngModel)]="searchQuery"
+  />
+</div>
+
+<div
+  #searchContainer
+  class="card bg-base-100 shadow-xl z-10 absolute left-0 right-0 ml-auto mr-auto w-3/4 top-20"
+>
+  @if(searchDone && showSearchContainer && searchResults.artists?.length > 0) {
+  <div class="card-body">
+    <h2 class="card-title">Artists</h2>
+    <div class="flex flex-row overflow-x-auto overflow-y-hidden mt-2">
+      @for(artist of searchResults.artists; track artist) {
+
+      <a
+        class="flex flex-col cursor-pointer mr-5"
+        [routerLink]="
+          artist.spotifyID === undefined
+            ? ['/a', artist._id]
+            : ['/a', artist.spotifyID]
+        "
+        (click)="resetSearch()"
+      >
+        <div class="w-32 h-32">
+          <img
+            class="rounded-full shadow-xl aspect-square object-cover bg-center"
+            src="{{ artist.profileImage }}"
+          />
+        </div>
+        <div class="flex pt-4 flex-col items-center max-h-48 mb-2">
+          <div>{{ artist.name }}</div>
+        </div>
+      </a>
+      }
+    </div>
+    <div class="divider">OR</div>
+    <h2 class="card-title">Events</h2>
+    <div class="flex flex-row overflow-x-auto overflow-y-hidden mt-2">
+      @for(event of searchResults.events; track event) {
+      <a
+        [routerLink]="
+          event.tmId === undefined ? ['/e', event._id] : ['/e', event.tmId]
+        "
+        (click)="resetSearch()"
+        class="flex flex-col cursor-pointer mr-5"
+      >
+        <div class="w-32 h-32">
+          <img
+            class="rounded-box w-32 h-32 aspect-square object-cover bg-center"
+            src="{{ event.coverImage }}"
+          />
+        </div>
+        <div class="flex pt-4 flex-col items-start max-w-48">
+          <div class="max-w-44">{{ event.eventName }}</div>
+          <div class="max-w-44 text-gray-400">
+            {{ event.dateTime | date : "mediumDate" }}
+          </div>
+          <div class="max-w-44 text-gray-400">{{ event.venue }}</div>
+        </div>
+      </a>
+      }
+    </div>
+  </div>
+  }@else if(!searchDone && showSearchContainer && searchQuery.length > 0){
+  <div class="w-full text-center p-3 pt-6">
+    <span class="loading loading-dots loading-lg"></span>
+  </div>
+  }
+</div>

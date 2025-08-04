@@ -1,0 +1,201 @@
+@if(_eventPage) {
+<div
+  class="container mx-auto sm:max-w-full lg:max-w-screen-lg mt-3 font-roboto"
+>
+  <div
+    style="background-image: url('{{ _eventPage.coverImage }}');"
+    class="card shadow-xl bg-center bg-cover rounded-none"
+  >
+    <div
+      class="card-body backdrop-blur-sm text-white bg-slate-800 bg-opacity-60"
+    >
+      <div class="flex lg:flex-row xs:flex-col xs:gap-y-2 items-center gap-x-4">
+        <img
+          src="{{ _eventPage.coverImage }}"
+          class="aspect-square object-cover w-40 h-40 max-w-none"
+        />
+        <div class="flex flex-col">
+          <h1 class="card-title font-headers font-normal text-5xl">
+            {{ _eventPage.eventName }}
+          </h1>
+          <div class="flex flex-row gap-1 flex-wrap pt-1 pb-2">
+            @for (genre of _eventPage.genres; track genre) {
+            <div class="badge badge-sm capitalize w-fit flex-none">
+              {{ genre }}
+            </div>
+            }
+          </div>
+          <P>{{ _eventPage.description }}</P>
+        </div>
+      </div>
+
+      <div class="card-actions items-center justify-between">
+        <div class="flex md:flex-row xs:flex-col sm:flex-col gap-x-7">
+          <div class="flex items-center">
+            <div class="mr-3">
+              <span
+                class="icon-[uit--calender]"
+                style="width: 48px; height: 48px"
+              ></span>
+            </div>
+            <div class="">
+              <div class="font-bold">
+                {{ _eventPage.dateTime | date : "mediumDate" }}
+              </div>
+              <div class="text-gray-300">
+                {{ _eventPage.dateTime | date : "shortTime" }}
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="mr-3">
+              <span
+                class="icon-[ep--location]"
+                style="width: 48px; height: 48px"
+              ></span>
+            </div>
+            <div class="">
+              <div class="font-bold">{{ _eventPage.venue }}</div>
+              <div class="text-gray-300">
+                {{ _eventPage.venueAddress }}
+              </div>
+              <div class="text-gray-300">
+                {{ _eventPage.city }},
+                {{ _eventPage.country }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-y-1">
+          <a
+            href="{{ _eventPage.url }}"
+            target="_blank"
+            class="btn btn-primary text-white"
+            >Buy Now</a
+          >
+          <a
+            class="btn btn-primary text-white"
+            [href]="googleCalendarUrl"
+            target="_blank"
+            >Add to Calendar</a
+          >
+          @if(authService.currentUser$ | async; as user) { @if(_userAttending) {
+          <button (click)="attendEvent()" class="btn btn-primary text-white">
+            Cancel your arrival
+          </button>
+          }@else{
+          <button (click)="attendEvent()" class="btn btn-primary text-white">
+            Attend this event
+          </button>
+          } }@else{
+          <a routerLink="/login" class="btn btn-primary text-white">
+            Attend this event
+          </a>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col gap-3">
+    <div class="flex md:flex-row xs:flex-col mt-3 gap-3">
+      <div class="bg-base-100 shadow-md xs:w-full md:w-4/5">
+        <div class="p-5">
+          <h2 class="font-headers text-2xl">Find where to stay!</h2>
+          <iframe
+            class="w-full sm:h-80 lg:h-96"
+            title="stay22"
+            id="stay22-widget"
+            style="border-radius: 12px"
+            width="100%"
+            height="352"
+            frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            #stay22Frame
+          ></iframe>
+        </div>
+      </div>
+      <div class="flex flex-col gap-y-3 xs:w-full md:w-1/3">
+        <div class="bg-base-100 shadow-md flex flex-row justify-between p-5">
+          <h2 class="font-headers text-2xl">Share Event</h2>
+          <div class="flex flex-row gap-1 right-0">
+            <a
+              class="icon-[ic--baseline-facebook]"
+              style="width: 24px; height: 24px"
+              href="https://www.facebook.com/sharer/sharer.php?u={{
+                getLink()
+              }}"
+              target="_blank"
+            ></a>
+            <a
+              class="icon-[pajamas--twitter]"
+              style="width: 24px; height: 24px"
+              href="https://twitter.com/intent/tweet?text=Watch {{
+                _eventPage.name
+              }} on BeatFinder http://beatfinder.com/e/{{ _eventPage.tmId }}"
+              target="_blank"
+            ></a>
+            <a
+              class="icon-[carbon--email]"
+              style="width: 24px; height: 24px"
+              href="mailto:enter@email.com?subject=Watch {{
+                _eventPage.name
+              }} on BeatFinder http://beatfinder.com/e/{{ _eventPage.tmId }}"
+              target="_blank"
+            ></a>
+          </div>
+        </div>
+        @if( _eventPage.generalInfo || _eventPage.accessibility ||
+        _eventPage.parkingDetail) {
+        <div class="bg-base-100 shadow-md">
+          <div class="p-5">
+            <h2 class="font-headers pb-5 text-2xl">About the venue</h2>
+            <div class="flex flex-row gap-x-4" style="margin-right: -10px">
+              <div
+                class="flex flex-col overflow-y-auto overflow-x-hidden"
+                style="max-height: 280px"
+              >
+                <h4 class="font-bold">General Info</h4>
+                <p class="font-roboto mt-2 mb-2">
+                  {{ _eventPage.generalInfo }}
+                </p>
+                <h4 class="font-bold mt-3">Accessibility</h4>
+                <p class="font-roboto mt-2 mb-2">
+                  {{ _eventPage.accessibility }}
+                </p>
+                <h4 class="font-bold mt-3">Parking Detail</h4>
+                <p class="font-roboto mt-2 mb-2">
+                  {{ _eventPage.parkingDetail }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    @if(_eventPage.lineUp?.length) {
+    <div class="bg-base-100 shadow-md p-5">
+      <h2 class="font-headers pb-5 text-2xl">Line Up</h2>
+      <div
+        class="flex flex-row overflow-x-auto overflow-y-hidden gap-8 items-center"
+      >
+        @for(lineUpArtist of _eventPage.lineUp; track lineUpArtist) {
+        <a class="flex flex-col cursor-pointer items-center">
+          <img
+            class="rounded-full aspect-square object-cover w-32 h-32 max-w-none"
+            src="{{ lineUpArtist.image }}"
+          />
+          <div class="flex pt-4 flex-col items-center max-h-48 mb-2 h-16">
+            <div class="text-center">{{ lineUpArtist.name }}</div>
+          </div>
+        </a>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
+
+}

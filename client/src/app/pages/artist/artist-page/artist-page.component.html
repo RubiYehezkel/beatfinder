@@ -1,0 +1,229 @@
+<!-- Artist Page -->
+<!-- Artist Header -->
+@if(_artistPage != undefined) {
+<div
+  class="container mx-auto sm:max-w-full md:max-w-screen-lg mt-3 font-roboto"
+>
+  <div
+    class="shadow-xl bg-cover bg-center md:h-60"
+    style="background-image: url('{{ _artistPage.artist.profileImage }}')"
+  >
+    <div
+      style="
+        background: linear-gradient(
+          rgba({{ _artistPage.dominantColor }}, 0) -100%,
+          rgb({{ _artistPage.dominantColor }}) 100%
+        );
+      "
+      class="backdrop-blur-sm text-white"
+    >
+      <div
+        class="flex p-9 md:flex-row md:h-60 xs:flex-col justify-between w-full gap-7 items-center"
+      >
+        <img
+          class="float-left rounded-full w-36 h-36 shadow-xl aspect-square object-cover bg-center"
+          src="{{ _artistPage.artist.profileImage }}"
+          #imgTarget
+        />
+        <div class="flex flex-col gap-1">
+          <h1 class="font-headers text-3xl">
+            {{ _artistPage.artist.name }}
+          </h1>
+          <div class="flex flex-row gap-1 flex-wrap">
+            @for (genre of _artistPage.artist.genres; track genre) {
+            <div class="badge badge-sm capitalize w-fit flex-none">
+              {{ genre }}
+            </div>
+            }
+          </div>
+          <p
+            class="font-light description-text"
+            [innerHTML]="_artistPage.artist.about"
+          ></p>
+        </div>
+        <div class="flex flex-col justify-between h-2/3">
+          @if(authService.currentUser$ | async; as user) { @if(!_userFollowing)
+          {
+          <button
+            class="btn btn-primary"
+            style="width: 156px"
+            (click)="followArtist()"
+          >
+            Follow Artist
+          </button>
+          }@else{
+          <button
+            class="btn btn-primary"
+            style="width: 156px"
+            (click)="followArtist()"
+          >
+            Unfollow Artist
+          </button>
+          } }@else {
+          <a class="btn btn-primary" style="width: 156px" routerLink="/login">
+            Follow Artist
+          </a>
+          }
+          <div class="flex flex-row gap-1 ml-auto mt-3">
+            @if(_artistPage.artist.spotifyID) {
+            <a
+              href="https://open.spotify.com/artist/{{
+                _artistPage.artist.spotifyID
+              }}"
+              target="_blank"
+              class="flex items-center justify-center bg-slate-100 w-9 h-9 rounded-full cursor-pointer"
+            >
+              <span
+                class="icon-[logos--spotify-icon]"
+                style="width: 24px; height: 24px"
+              ></span>
+            </a>
+            } @if(_artistPage.artist.externalLinks?.instagram) {
+            <a
+              class="flex items-center justify-center bg-slate-100 w-9 h-9 rounded-full"
+              href="{{ _artistPage.artist.externalLinks.instagram }}"
+              target="_blank"
+            >
+              <span
+                class="icon-[skill-icons--instagram]"
+                style="width: 24px; height: 24px"
+              ></span>
+            </a>
+            } @if(_artistPage.artist.externalLinks?.itunes) {
+            <a
+              class="flex items-center justify-center bg-slate-100 w-9 h-9 rounded-full"
+              href="{{ _artistPage.artist.externalLinks.itunes }}"
+              target="_blank"
+            >
+              <span
+                class="icon-[simple-icons--applemusic]"
+                style="width: 24px; height: 24px; color: #ff0000"
+              ></span>
+            </a>
+            } @if(_artistPage.artist.externalLinks?.youtube) {
+            <a
+              class="flex items-center justify-center bg-slate-100 w-9 h-9 rounded-full"
+              href="{{ _artistPage.artist.externalLinks.youtube }}"
+              target="_blank"
+            >
+              <span
+                class="icon-[logos--youtube-icon]"
+                style="width: 24px; height: 24px; color: #ff0000"
+              ></span>
+            </a>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lower Section  -->
+  <div class="flex md:flex-row xs:flex-col-reverse mt-3 gap-3">
+    <div class="w-2/3 bg-base-100 xs:w-full shadow-md">
+      <div class="p-5">
+        <h2 class="font-headers text-2xl">Upcoming Events</h2>
+        <div class="">
+          @for(event of _artistPage.events; track event) {
+          <a
+            [routerLink]="
+              event.tmId === undefined ? ['/e', event._id] : ['/e', event.tmId]
+            "
+            class="border-b pt-4 pb-4 hover: cursor-pointer"
+          >
+            <div class="flex flex-row gap-5 hover:bg-gray-100 p-3">
+              <div class="flex flex-col">
+                <span class="font-light text-sm uppercase">{{
+                  event.dateTime | date : "MMM"
+                }}</span>
+                <span class="font-bold text-xl">{{
+                  event.dateTime | date : "dd"
+                }}</span>
+              </div>
+              <div class="flex flex-col">
+                <h1 class="font-bold">{{ event.eventName }}</h1>
+                <h2 class="font-light text-slate-500">
+                  {{ event.city }}, {{ event.country }}
+                </h2>
+              </div>
+            </div>
+          </a>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col w-1/2 gap-y-3 xs:w-full">
+      <div class="bg-base-100 shadow-md flex flex-row justify-between p-5">
+        <h2 class="font-headers text-2xl">Share Artist</h2>
+        <div class="flex flex-row gap-1 right-0">
+          <a
+            class="icon-[ic--baseline-facebook]"
+            style="width: 24px; height: 24px"
+            href="https://www.facebook.com/sharer/sharer.php?u={{ getLink() }}"
+            target="_blank"
+          ></a>
+          <a
+            class="icon-[pajamas--twitter]"
+            style="width: 24px; height: 24px"
+            href="https://twitter.com/intent/tweet?text=Watch {{
+              _artistPage.artist.name
+            }} on BeatFinder http://beatfinder.com/a/{{
+              _artistPage.artist.spotifyID
+            }}"
+            target="_blank"
+          ></a>
+          <a
+            class="icon-[carbon--email]"
+            style="width: 24px; height: 24px"
+            href="mailto:enter@email.com?subject=Watch {{
+              _artistPage.artist.name
+            }} on BeatFinder http://beatfinder.com/a/{{
+              _artistPage.artist.spotifyID
+            }}"
+            target="_blank"
+          ></a>
+        </div>
+      </div>
+      <div class="w-2/3 bg-base-100 xs:w-full shadow-md">
+        <div class="p-5">
+          <h2 class="font-headers text-2xl">Top Tracks</h2>
+          <iframe
+            style="border-radius: 12px"
+            width="100%"
+            height="352"
+            frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            #spotifyPlayer
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spotify API dosent allow this anymore -->
+  <!-- <div class="bg-base-100 shadow-md flex flex-col p-5 mt-3">
+    <h2 class="font-headers text-2xl">Similar Artists</h2>
+    <div
+      id="similar-artists"
+      class="flex flex-row overflow-x-auto overflow-y-hidden mt-2 gap-8 items-center pb-3"
+    >
+      @for(artist of _artistPage.artist.relatedArtists; track artist) {
+      <a
+        class="flex flex-col cursor-pointer items-center"
+        [routerLink]="['/a', artist.spotifyId]"
+      >
+        <img
+          class="rounded-full aspect-square object-cover w-32 h-32 max-w-none"
+          src="{{ artist.profileImage }}"
+        />
+        <div class="flex pt-4 flex-col items-center max-h-48 mb-2 h-16">
+          <div class="text-center">{{ artist.name }}</div>
+        </div>
+      </a>
+      }
+    </div>
+  </div> -->
+</div>
+}

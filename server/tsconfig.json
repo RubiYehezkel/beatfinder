@@ -1,0 +1,23 @@
+{
+  "include": ["src/**/*", "types/**/*"],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*", "src/types/*"],
+      "@models/*": ["src/models/*"],
+      "@middleware": ["src/middlewares"],
+      "@middleware/*": ["src/middlewares/*"],
+      "@router/*": ["src/router/*"],
+      "@utils/*": ["src/utils/*"],
+      "@db/*": ["src/db/*"]
+    },
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "dist"
+  }
+}

@@ -1,0 +1,172 @@
+<div
+  name="welcome-div"
+  class="w-full h-fit bg-cover bg-center shadow-xl"
+  style="
+    background-image: url('https://assets.unileversolutions.com/v1/985812.jpg');
+  "
+>
+  <div
+    class="container mx-auto sm:max-w-full md:max-w-screen-lg font-roboto flex flex-col gap-5 pt-10 pb-10"
+  >
+    <h1 class="text-white font-headers text-8xl w-1/2">
+      Find concerts near you
+      <div
+        class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+      ></div>
+    </h1>
+    <p class="text-white font-syne text-2xl w-1/2">
+      Get personalized concert recommendations and stay connected with your
+      favorite artists @if(authService.currentUser$ | async; as user) {
+      <button class="btn btn-primary text-white mt-3" routerLink="/search">
+        Get Started
+      </button>
+      } @else {
+      <button class="btn btn-primary text-white mt-3" routerLink="/login">
+        Get Started
+      </button>
+      }
+    </p>
+  </div>
+</div>
+
+<div class="container mx-auto sm:max-w-full md:max-w-screen-lg mt-3">
+  <div class="bg-base-100 p-5 rounded-xl">
+    <div name="around-you">
+      <h1 class="font-headers text-3xl mb-6">
+        concerts in {{ loadLocation().city }}, {{ loadLocation().country }} for
+        this week
+      </h1>
+      <div class="">
+        <div
+          class="flex flex-row overflow-x-auto overflow-y-hidden mt-2 gap-3 pb-2"
+        >
+          @if(!mainPageData.events) {
+          <div class="flex w-full justify-center">
+            <span class="loading loading-spinner loading-md p-5"></span>
+          </div>
+          }@else if(mainPageData.events.length > 0) { @for(concert of
+          mainPageData.events; track concert) {
+          <a
+            class="flex flex-col cursor-pointer mr-5"
+            [routerLink]="
+              concert.tmId === undefined
+                ? ['/e', concert._id]
+                : ['/e', concert.tmId]
+            "
+          >
+            <div class="w-64 h-64 relative">
+              <div
+                class="flex flex-col rounded-tl-lg text-white absolute bg-gradient-to-r from-beatfinder-blue to-beatfinder-green p-2 top-0 left-0"
+              >
+                <span class="font-light text-sm uppercase">{{
+                  concert.dateTime | date : "MMM"
+                }}</span>
+                <span class="font-bold text-xl">{{
+                  concert.dateTime | date : "dd"
+                }}</span>
+              </div>
+              <img
+                class="rounded-box aspect-square object-cover bg-center w-64 h-64"
+                src="{{ concert.coverImage }}"
+              />
+              <div
+                class="flex flex-col transition backdrop-blur-sm text-white bg-slate-600 bg-opacity-40 rounded-bl-2xl rounded-br-2xl p-3 absolute bottom-0 w-full"
+              >
+                <div
+                  class="mb-2 card-title font-headers font-normal w-64 text-ellipsis"
+                >
+                  {{ concert.eventName }}
+                </div>
+                <div class="flex flex-row items-center gap-1">
+                  <span
+                    class="icon-[ep--location]"
+                    style="width: 18px; height: 18px"
+                  ></span>
+                  <div>{{ concert.venue }}</div>
+                </div>
+              </div>
+            </div>
+          </a>
+          } }@else {
+          <div class="w-full text-center">
+            <h1 class="font-syne text-2xl">
+              There are no events near your location for this week
+            </h1>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h1 class="font-headers text-3xl mb-6">
+      Most Popular Artists on beatfinder
+    </h1>
+    <div
+      class="flex flex-row overflow-x-auto overflow-y-hidden mt-2 gap-x-3 pb-2"
+    >
+      @if(!mainPageData.artists) {
+      <div class="flex w-full justify-center">
+        <span class="loading loading-spinner loading-md p-5"></span>
+      </div>
+      } @for(artist of mainPageData.artists; track artist; let i = $index) {
+      <a
+        class="cursor-pointer w-40 h-40"
+        [routerLink]="
+          artist.spotifyID === undefined
+            ? ['/a', artist._id]
+            : ['/a', artist.spotifyID]
+        "
+      >
+        <div class="w-40 h-40 relative">
+          <div
+            class="flex flex-col rounded-tl-lg text-white absolute bg-gradient-to-r from-beatfinder-blue to-beatfinder-green p-2 top-0 left-0"
+          >
+            <span class="font-bold text-xl">{{ i + 1 }}</span>
+          </div>
+          <img
+            class="rounded-box shadow-xl aspect-square object-cover bg-center w-40 h-40"
+            [src]="getSantizeUrl(artist.profileImage)"
+          />
+        </div>
+        <div
+          class="backdrop-blur-sm text-white bg-slate-600 bg-opacity-40 rounded-bl-2xl rounded-br-2xl relative bottom-11"
+        >
+          <div class="ml-3 card-title font-headers font-normal pb-2 pt-2">
+            {{ artist.name }}
+          </div>
+        </div>
+      </a>
+      }
+    </div>
+
+    <div class="divider"></div>
+    <h1 class="font-headers text-3xl mb-6">Find concerts by genre</h1>
+    <div
+      class="flex flex-row overflow-x-auto overflow-y-hidden mt-2 gap-x-3 pb-2"
+    >
+      @for(genre of popularGenres; track genre) {
+      <a
+        class="cursor-pointer w-40 h-40"
+        [routerLink]="['/search']"
+        [queryParams]="{ genre: genre }"
+      >
+        <div
+          class="rounded-box aspect-square bg-center object-cover bg-cover"
+          style="
+            background-image: url('https://facts.net/wp-content/uploads/2023/07/18-facts-about-amsterdam-dance-event-1689307292.jpg');
+          "
+        >
+          <div
+            class="flex justify-center items-center backdrop-blur-sm text-white bg-slate-600 bg-opacity-40 rounded-2xl w-40 h-40"
+          >
+            <h1 class="w-full text-center font-headers text-2xl">
+              {{ genre }}
+            </h1>
+          </div>
+        </div>
+      </a>
+      }
+    </div>
+  </div>
+</div>

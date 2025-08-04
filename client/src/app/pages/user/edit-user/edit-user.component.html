@@ -1,0 +1,93 @@
+@if(_userData) {
+<div class="container mx-auto sm:max-w-full md:max-w-screen-lg mt-5">
+  <div
+    class="shadow-xl bg-[url('https://ddex.co.uk/wp-content/uploads/2018/10/Live-Music-Events-Stand-Design.jpg')] bg-center bg-cover md:h-30"
+  >
+    <div class="backdrop-blur-sm text-white">
+      <div
+        class="flex p-9 md:flex-row md:h-30 xs:flex-col justify-between w-full gap-7 items-center"
+      >
+        <h1 class="font-headers text-5xl">
+          Editing user - {{ _userData.firstName }} {{ _userData.lastName }}
+          <div
+            class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+          ></div>
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div class="flex mt-5 justify-center">
+    <div class="w-1/2 bg-base-100 shadow-md">
+      <div class="p-5">
+        <div class="">
+          <form
+            class="card-body"
+            [formGroup]="editUserForm"
+            (ngSubmit)="onSubmit()"
+            ngNativeValidate
+          >
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">First Name</span>
+              </label>
+              <input
+                type="text"
+                placeholder="first name"
+                class="input input-bordered"
+                formControlName="firstName"
+                name="firstName"
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Last Name</span>
+              </label>
+              <input
+                type="text"
+                placeholder="last name"
+                class="input input-bordered"
+                formControlName="lastName"
+                name="lastName"
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Email</span>
+              </label>
+              <input
+                type="email"
+                placeholder="email"
+                class="input input-bordered"
+                formControlName="email"
+                name="email"
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">User Level</span>
+              </label>
+              <select
+                formControlName="type"
+                class="select select-bordered"
+                (change)="changeUserLevel($event)"
+              >
+                <option value="User">User</option>
+                <option value="Artist">Artist</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+            <div class="form-control mt-6">
+              <button
+                type="submit"
+                class="btn btn-primary text-bold text-white"
+              >
+                Edit User
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

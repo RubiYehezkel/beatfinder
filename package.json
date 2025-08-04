@@ -1,0 +1,25 @@
+{
+  "name": "beatfinder",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/barel121/beatfinder.git",
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start-server": "cd server && yarn start",
+    "start": "concurrently \"yarn workspace @beatfinder/client start\" \"yarn workspace @beatfinder/server start\"",
+    "build": "concurrently \"yarn workspace @beatfinder/client build\" \"yarn workspace @beatfinder/server build\"",
+    "build:pipeline": "yarn install && yarn workspace @beatfinder/client build && yarn workspace @beatfinder/server build",
+    "start:prod": "cd server && node dist/index.js"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "dependencies": {
+    "@angular/cli": "^17.3.5",
+    "@spotify/web-api-ts-sdk": "^1.2.0",
+    "moment": "^2.30.1"
+  }
+}

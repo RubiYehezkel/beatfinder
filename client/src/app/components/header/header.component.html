@@ -1,0 +1,95 @@
+<div class="navbar bg-base-100">
+  <div class="w-9/12 m-auto justify-between">
+    <a routerLink="/">
+      <div class="flex flex-col text-2xl p-2 ml-2 whitespace-nowrap w-fit">
+        <a class="font-headers">BeatFinder</a>
+        <div
+          class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+        ></div>
+      </div>
+    </a>
+    <div
+      class="w-5/6 relative flex flex-row lg:justify-between lg:gap-x-5 xs:gap-x-3"
+    >
+      <app-search-container
+        class="xs:hidden lg:block w-full"
+      ></app-search-container>
+      <button
+        routerLink="search"
+        class="xs:hidden lg:block btn btn-outline btn-primary"
+      >
+        Advanced Search
+      </button>
+      <button
+        routerLink="search"
+        class="xs:block lg:hidden btn btn-outline btn-primary"
+      >
+        <span
+          class="icon-[material-symbols--search]"
+          style="width: 20px; height: 20px"
+        ></span>
+      </button>
+      <app-location-chooser></app-location-chooser>
+    </div>
+    @if(authService.currentUser$ | async; as user) {
+    <div class="flex-none gap-2">
+      <div class="dropdown dropdown-end">
+        <div
+          tabindex="0"
+          role="button"
+          class="btn btn-ghost btn-circle avatar placeholder"
+        >
+          <div class="bg-neutral text-neutral-content rounded-full w-24">
+            <span class="text-2xl">{{ user!.firstName[0] }}</span>
+          </div>
+        </div>
+
+        <ul
+          tabindex="0"
+          class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+        >
+          <li>
+            <a class="justify-between" [routerLink]="['user', 'user-page']">
+              Profile
+            </a>
+          </li>
+          @if(user!.type == "Artist") {
+          <li>
+            <a [routerLink]="['/a', user!.artistPageID]">Artist</a>
+            <ul>
+              <li><a [routerLink]="['/event', 'add']">New Event</a></li>
+              <li><a [routerLink]="['/event', 'manage']">Events</a></li>
+              <li><a [routerLink]="['/artist', 'edit']">Settings </a></li>
+            </ul>
+          </li>
+          } @if(user!.type === "Admin") {
+          <li>
+            <a>Admin</a>
+            <ul>
+              <li><a [routerLink]="['/event', 'manage']">Manage Events</a></li>
+              <li>
+                <a [routerLink]="['/user', 'manage-users']">Manage Users</a>
+              </li>
+              <li>
+                <a [routerLink]="['/artist', 'manage']">Manage Artist</a>
+              </li>
+            </ul>
+          </li>
+          }
+          <li><a (click)="logout()">Logout</a></li>
+        </ul>
+      </div>
+      @if(user!.type != "User") {
+      <div
+        class="badge badge-primary"
+        style="position: relative; right: 50%; top: 15px"
+      >
+        {{ user!.type }}
+      </div>
+      }
+    </div>
+    } @else {
+    <a routerLink="/login" class="btn btn-primary">Login</a>
+    }
+  </div>
+</div>

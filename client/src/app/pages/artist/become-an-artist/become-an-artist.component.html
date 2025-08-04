@@ -1,0 +1,176 @@
+<!-- Artist Page -->
+<!-- Artist Header -->
+<div class="container mx-auto sm:max-w-full md:max-w-screen-lg mt-3">
+  <div
+    class="shadow-xl bg-[url('https://ddex.co.uk/wp-content/uploads/2018/10/Live-Music-Events-Stand-Design.jpg')] bg-center bg-cover md:h-60 rounded-md"
+  >
+    <div class="backdrop-blur-sm text-white rounded-md">
+      <div
+        class="flex p-9 md:flex-row md:h-60 xs:flex-col justify-between w-full gap-7 items-center"
+      >
+        <div class="flex flex-col gap-1">
+          <h1 class="font-headers text-5xl">
+            Become an artist on beatfinder
+            <div
+              class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+            ></div>
+          </h1>
+
+          <p class="font-light">
+            Becoming an artist on Beatfinder connects you with a vibrant
+            community of music lovers. Showcase your talent, collaborate with
+            fellow artists, and gain global exposure. Join Beatfinder today and
+            start your journey of artistic expression and discovery.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lower Section  -->
+  <div class="flex mt-5">
+    <div class="w-full bg-base-100 rounded-md shadow-md">
+      <div class="p-5">
+        <div>
+          <form
+            class="flex flex-col gap-11"
+            [formGroup]="artistForm"
+            (ngSubmit)="onSubmit()"
+            enctype="multipart/form-data"
+            ngNativeValidate
+          >
+            <div class="flex md:flex-row xs:flex-col-reverse items-center">
+              <label class="form-control md:w-1/2 xs:w-full">
+                <div class="label">
+                  <span class="label-text">Artist Name</span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Type here"
+                  class="input input-bordered"
+                  formControlName="name"
+                  required
+                />
+              </label>
+              <div class="divider lg:divider-horizontal"></div>
+              <p class="text-left md:w-1/2 xs:w-full">
+                Enter your artist name for Beatfinder. Make it unique and
+                memorable—it's your brand!
+              </p>
+            </div>
+            <div class="flex md:flex-row xs:flex-col-reverse items-center">
+              <div class="form-control md:w-1/2 xs:w-full">
+                <label class="label">
+                  <span class="label-text">Artist Profile Image</span>
+                </label>
+                <input
+                  type="file"
+                  class="file-input file-input-bordered w-full"
+                  required
+                  (input)="selectImage($event)"
+                />
+              </div>
+              <div class="divider lg:divider-horizontal"></div>
+              <p class="text-left xs:w-full md:w-1/2">
+                Upload an image that captures your essence as an artist. Choose
+                a photo that reflects your vibe.
+              </p>
+            </div>
+            <div class="flex md:flex-row xs:flex-col-reverse items-center">
+              <div class="form-control md:w-1/2 xs:w-full">
+                <label class="label">
+                  <span class="label-text">Artist Genres</span>
+                </label>
+                <ng-select
+                  [items]="popularGenres"
+                  bindLabel="name"
+                  bindValue="id"
+                  [multiple]="true"
+                  name="favGenres"
+                  formControlName="genres"
+                  required
+                >
+                </ng-select>
+              </div>
+              <div class="divider lg:divider-horizontal"></div>
+              <p class="text-left md:w-1/2 xs:w-full">
+                Pick the genres that define your sound. Let the world know what
+                makes your beats unique.
+              </p>
+            </div>
+            <div class="flex md:flex-row xs:flex-col-reverse items-center">
+              <label class="form-control md:w-1/2 xs:w-full">
+                <div class="label">
+                  <span class="label-text">Artist Bio</span>
+                </div>
+                <textarea
+                  class="textarea textarea-bordered h-24"
+                  placeholder="Bio"
+                  formControlName="about"
+                  required
+                ></textarea>
+                <div class="label"></div>
+              </label>
+              <div class="divider lg:divider-horizontal"></div>
+              <p class="text-left md:w-1/2 xs:w-full">
+                Write a mini-bio introducing yourself to the Beatfinder
+                community. Share what inspires your tunes.
+              </p>
+            </div>
+
+            <div class="flex md:flex-row xs:flex-col-reverse items-center">
+              <div class="form-control md:w-1/2 xs:w-full">
+                <label class="label">
+                  <span class="label-text">Artist Social</span>
+                </label>
+                <div class="flex flex-col gap-4">
+                  <div class="input input-bordered flex items-center gap-2">
+                    <span
+                      class="icon-[mdi--instagram] w-4 h-4 opacity-70"
+                    ></span>
+                    <input
+                      type="text"
+                      class="grow w-1/4"
+                      placeholder="Enter URL to your Instagram page"
+                      formControlName="instagram"
+                    />
+                  </div>
+                  <div class="input input-bordered flex items-center gap-2">
+                    <span
+                      class="icon-[simple-icons--applemusic] w-4 h-4 opacity-70"
+                    ></span>
+                    <input
+                      type="text"
+                      class="grow w-1/4"
+                      placeholder="Enter URL to your Apple Music page"
+                      formControlName="itunes"
+                    />
+                  </div>
+                  <div class="input input-bordered flex items-center gap-2">
+                    <span class="icon-[mdi--youtube] w-4 h-4 opacity-70"></span>
+                    <input
+                      type="text"
+                      class="grow w-1/4"
+                      placeholder="Enter URL to your YouTube page"
+                      formControlName="youtube"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="divider lg:divider-horizontal"></div>
+              <p class="text-left md:w-1/2 xs:w-full">
+                Connect your social media profiles to your Beatfinder account.
+                Share your music and updates on Instagram, Spotify, Apple Music,
+                and YouTube.
+              </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              Join Beatfinder
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

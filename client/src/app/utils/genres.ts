@@ -1,0 +1,18 @@
+export const PopularGenresList: string[] = [
+  'Blues',
+  'Country',
+  'Dance/Electronic',
+  'Folk',
+  'Hip-Hop/Rap',
+  'Jazz',
+  'Latin',
+  'Metal',
+  'Reggae',
+  'Rock',
+  'Classical',
+  'Dance',
+  'Opera',
+  'Pop',
+  'RnB',
+  'Israeli',
+];

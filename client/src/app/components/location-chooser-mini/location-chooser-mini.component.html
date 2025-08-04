@@ -1,0 +1,25 @@
+<div class="input input-bordered flex items-center gap-2">
+  <span class="icon-[ep--location] w-4 h-4 opacity-70"></span>
+  <input
+    type="text"
+    class="w-full"
+    (keyup)="fetchLocations()"
+    [(ngModel)]="searchQuery"
+    placeholder="Enter Location"
+    (blur)="onTouched()"
+  />
+</div>
+
+@if(searchResults.length > 0) {
+<div
+  class="flex border-solid border flex-col p-2 mt-5 rounded-md absolute bg-base-100"
+>
+  @for(location of searchResults; track location;){
+  <span
+    class="p-1 font-bold hover:bg-gray-200 cursor-pointer"
+    (click)="chooseLocation(location.city + ', ' + location.country)"
+    >{{ location.city }}, {{ location.country }}</span
+  >
+  }
+</div>
+}

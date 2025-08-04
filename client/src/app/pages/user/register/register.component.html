@@ -1,0 +1,99 @@
+<div class="hero min-h-screen">
+  <div class="hero-content flex-col lg:flex-row-reverse">
+    <div class="text-center lg:text-left">
+      <div
+        class="bg-[url('https://ddex.co.uk/wp-content/uploads/2018/10/Live-Music-Events-Stand-Design.jpg')] bg-center bg-cover rounded-box shadow-xl"
+      >
+        <div class="backdrop-blur p-5 rounded-box">
+          <h1 class="text-5xl font-headers text-white w-fit">
+            Register now!
+            <div
+              class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+            ></div>
+          </h1>
+          <p class="py-6 text-white text-bolder">
+            Register now to receive personalized updates and event alerts
+            tailored to your favorite artists. Customize your preferences for a
+            curated lineup of live shows and releases. Stay in the loop
+            effortlessly with a tailored account experience.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+      <form class="card-body" (ngSubmit)="register()" ngNativeValidate>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">First Name</span>
+          </label>
+          <input
+            type="text"
+            placeholder="first name"
+            class="input input-bordered"
+            required
+            [(ngModel)]="user.firstName"
+            name="firstName"
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Last Name</span>
+          </label>
+          <input
+            type="text"
+            placeholder="last name"
+            class="input input-bordered"
+            required
+            [(ngModel)]="user.lastName"
+            name="lastName"
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            placeholder="email"
+            class="input input-bordered"
+            required
+            [(ngModel)]="user.email"
+            name="email"
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Password</span>
+          </label>
+          <input
+            type="password"
+            placeholder="password"
+            class="input input-bordered"
+            required
+            [(ngModel)]="user.password"
+            name="password"
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Choose your favorite generas</span>
+          </label>
+          <ng-select
+            [items]="popularGenres"
+            bindLabel="name"
+            bindValue="id"
+            [(ngModel)]="user.favGenres"
+            [multiple]="true"
+            name="favGenres"
+          >
+          </ng-select>
+        </div>
+        <div class="form-control mt-6">
+          <button type="submit" class="btn btn-primary text-bold text-white">
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

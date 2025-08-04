@@ -1,0 +1,61 @@
+@if(allArtist) {
+<div class="container mx-auto sm:max-w-full md:max-w-screen-lg mt-5">
+  <div
+    class="shadow-xl bg-[url('https://ddex.co.uk/wp-content/uploads/2018/10/Live-Music-Events-Stand-Design.jpg')] bg-center bg-cover md:h-30 rounded-md"
+  >
+    <div class="backdrop-blur-sm text-white rounded-md">
+      <div
+        class="flex p-9 md:flex-row md:h-30 xs:flex-col justify-between w-full gap-7 items-center"
+      >
+        <h1 class="font-headers text-5xl">
+          Your events on beatfinder
+          <div
+            class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+          ></div>
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div class="flex md:flex-row xs:flex-col-reverse mt-5 gap-3">
+    <div class="w-2/3 bg-base-100 rounded-md xs:w-full shadow-md items-center">
+      <div class="flex flex-col p-10">
+        <div>
+          @for(artist of allArtist; track artist) {
+          <div class="border-b">
+            <div class="flex flex-row hover:bg-gray-100 p-3 justify-between">
+              <div class="flex flex-row gap-5">
+                <div class="flex flex-col"></div>
+                <div class="flex flex-col">
+                  <h1 class="font-bold">{{ artist.name }}</h1>
+                </div>
+              </div>
+              <div class="flex flex-row gap-5">
+                <div
+                  class="flex flex-col items-center btn bg-white border-white hover:btn-error"
+                  (click)="deleteEvent(artist._id)"
+                >
+                  <span
+                    class="icon-[material-symbols-light--delete-outline]"
+                    style="width: 32px; height: 32px"
+                  ></span>
+                </div>
+                <a
+                  [routerLink]="['/artist', 'edit', artist._id]"
+                  class="flex flex-col items-center p-2 bg-white border-white btn hover:btn-warning"
+                >
+                  <span
+                    class="icon-[material-symbols-light--edit-outline]"
+                    style="width: 48px; height: 32px"
+                  ></span>
+                </a>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+}

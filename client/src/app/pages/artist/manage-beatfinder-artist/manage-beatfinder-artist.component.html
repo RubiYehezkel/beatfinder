@@ -1,0 +1,173 @@
+@if(artistData) {
+<!-- Edit Artist Page -->
+<div class="container mx-auto sm:max-w-full md:max-w-screen-lg mt-5">
+  <!-- Main Content -->
+  <div class="flex flex-col gap-5 bg-white rounded-md shadow-md p-5">
+    <!-- Top Section: Artist Name, Profile Image, and Header -->
+    <div class="flex flex-col lg:flex-row gap-5 pb-5">
+      <!-- Left Div: Header -->
+      <div class="w-full lg:w-3/5 flex items-center justify-center relative">
+        <div
+          class="bg-[url('https://ddex.co.uk/wp-content/uploads/2018/10/Live-Music-Events-Stand-Design.jpg')] bg-center bg-cover rounded-box shadow-xl p-5 flex items-center min-h-full"
+        >
+          <div class="backdrop-blur p-5 rounded-box">
+            <h1 class="text-5xl font-headers text-white w-fit">
+              Edit your artist/band's page
+              <div
+                class="bg-gradient-to-r from-beatfinder-blue to-beatfinder-green h-2"
+              ></div>
+            </h1>
+            <p class="py-6 text-white text-bolder text-left">
+              Make changes to your artist profile, update your bio, genres, and
+              social media links.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Div: Artist Name and Profile Image -->
+
+      <div
+        class="w-full lg:w-2/5 flex flex-col items-center relative border-l border-gray-300"
+      >
+        <div class="text-3xl mb-4 text-center font-headers">
+          {{ artistData.name }}
+        </div>
+        <div class="relative mb-5 flex justify-center">
+          <img
+            [src]="'/assets/photos/anonymous-user.webp'"
+            alt="Artist Profile Image"
+            class="rounded-full w-48 h-48 object-cover border-gray-300"
+          />
+          <button
+            type="button"
+            class="absolute top-1/2 right-[-60px] -translate-y-1/2 bg-blue-500 text-white rounded-full px-3 py-1 text-sm transition transform active:scale-95"
+          >
+            Edit Image
+          </button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="artistForm">
+      <!-- Divider Line -->
+      <div class="border-t border-gray-300 mt-5 w-2/3 mx-auto"></div>
+
+      <!-- Genres, Bio, and Social Section -->
+      <div class="w-full flex flex-col lg:flex-row gap-5 mt-5">
+        <!-- Left Div: Genres and Bio -->
+        <div
+          class="w-full lg:w-1/2 flex flex-col gap-5 pr-3 border-r border-gray-300"
+        >
+          <!-- Genres Section -->
+          <div class="w-full">
+            <label class="label">
+              <span class="label-text">Artist Genres</span>
+            </label>
+            <div class="w-full bg-gray-200 p-5 rounded-md">
+              <div class="flex flex-col lg:flex-row gap-5">
+                <!-- Selected Genres -->
+                <div class="w-full lg:w-1/2">
+                  <label class="label">
+                    <span class="label-text">Selected Genres:</span>
+                  </label>
+                  <div class="form-control w-full">
+                    <div class="bg-gray-200 rounded-md p-3">
+                      <div class="flex flex-wrap gap-2">
+                        @for (genre of tempGenres; track genre) {
+                        <div
+                          class="badge badge-outline badge-primary cursor-pointer transition-opacity hover:opacity-50"
+                          (click)="removeGenre(genre)"
+                        >
+                          {{ genre }}
+                        </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Select Genres -->
+                <div class="w-full lg:w-1/2">
+                  <div class="form-control w-full">
+                    <ng-select
+                      [items]="popularGenres"
+                      bindLabel="name"
+                      bindValue="name"
+                      [multiple]="true"
+                      placeholder="Select Genres"
+                      [(ngModel)]="selectedGenres"
+                      formControlName="genres"
+                      (change)="onGenresChange()"
+                      [closeOnSelect]="false"
+                      [clearable]="false"
+                    ></ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bio Section -->
+          <div class="w-full">
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Artist Bio</span>
+              </label>
+              <textarea
+                class="textarea textarea-bordered h-24 w-full"
+                placeholder="Bio"
+                formControlName="about"
+                required
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Div: Social Section -->
+        <div class="w-full lg:w-1/2 flex flex-col justify-center pl-3">
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text">Artist Social</span>
+            </label>
+            <div class="flex flex-col gap-4">
+              <div class="input input-bordered flex items-center gap-2">
+                <span class="icon-[mdi--instagram] w-4 h-4 opacity-70"></span>
+                <input
+                  type="text"
+                  class="grow w-1/4"
+                  placeholder="Enter URL to your Instagram page"
+                  formControlName="instagram"
+                />
+              </div>
+              <div class="input input-bordered flex items-center gap-2">
+                <span
+                  class="icon-[simple-icons--applemusic] w-4 h-4 opacity-70"
+                ></span>
+                <input
+                  type="text"
+                  class="grow w-1/4"
+                  placeholder="Enter URL to your Apple Music page"
+                  formControlName="itunes"
+                />
+              </div>
+              <div class="input input-bordered flex items-center gap-2">
+                <span class="icon-[mdi--youtube] w-4 h-4 opacity-70"></span>
+                <input
+                  type="text"
+                  class="grow w-1/4"
+                  placeholder="Enter URL to your YouTube page"
+                  formControlName="youtube"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full mt-5">
+        Save Changes
+      </button>
+    </form>
+  </div>
+</div>
+}
